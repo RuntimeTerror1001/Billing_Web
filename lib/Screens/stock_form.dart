@@ -24,7 +24,8 @@ class _AddStockState extends State<AddStock> {
 
   @override
   void initState() {
-    StockNotifier stockNotifier = Provider.of<StockNotifier>(context);
+    StockNotifier stockNotifier =
+        Provider.of<StockNotifier>(context, listen: false);
 
     if (stockNotifier.currentStock.id != null) {
       _currentStock = stockNotifier.currentStock;
@@ -182,7 +183,7 @@ class _AddStockState extends State<AddStock> {
       body: Center(
         child: Form(
           key: _globalKey,
-          autovalidate: true,
+          autovalidateMode: AutovalidateMode.always,
           child: VStack(
             [
               Center(
@@ -194,12 +195,21 @@ class _AddStockState extends State<AddStock> {
               20.heightBox,
               (widget.isUpdating ? '' : 'Last ID used is : ${getMaxID()}')
                   .text
-                  .textStyle(GoogleFonts.poppins())
+                  .textStyle(GoogleFonts.poppins(fontSize: 18))
                   .red600
                   .bold
                   .make(),
               2.heightBox,
-              Container(width: width, child: _buildIDField()),
+              Container(
+                  width: width,
+                  child: widget.isUpdating
+                      ? 'Unique ID : ${_currentStock.id}'
+                          .text
+                          .semiBold
+                          .textStyle(GoogleFonts.poppins(fontSize: 18))
+                          .red500
+                          .makeCentered()
+                      : _buildIDField()),
               10.heightBox,
               Container(width: width, child: _buildNameField()),
               10.heightBox,

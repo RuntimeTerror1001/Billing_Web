@@ -1,6 +1,8 @@
 import 'package:billin_app_web/Models/stock.dart';
 import 'package:billin_app_web/Notifiers/stock_notifier.dart';
-import 'package:billin_app_web/Screens/add_stock.dart';
+import 'package:billin_app_web/Screens/stock_form.dart';
+import 'package:billin_app_web/Screens/out_of_stock.dart';
+import 'package:billin_app_web/Screens/stock_screen.dart';
 import 'package:billin_app_web/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,9 +31,21 @@ class _NDrawerState extends State<NDrawer> {
             builder: (context) => new AddStock(isUpdating: false)));
   }
 
-  onPressed() {
+  returnOutStock() {
+    Navigator.push(
+        context, new MaterialPageRoute(builder: (context) => new OutOfStock()));
+  }
+
+  onPressed1() {
     if (onPress == 1) {
       return returnAddStock();
+    }
+    return () {};
+  }
+
+  onPressed2() {
+    if (onPress == 1) {
+      return returnOutStock();
     }
     return () {};
   }
@@ -57,14 +71,23 @@ class _NDrawerState extends State<NDrawer> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  leading: Icon(Icons.home, color: Colors.black),
-                  title: Text('Stocks', style: TextStyle(color: Colors.black)),
+                  // leading: Icon(Icons.home,
+                  //     color: (onPress == 1) ? Colors.red : Colors.black),
+                  title: Text('Stocks',
+                      style: TextStyle(
+                          color: (onPress == 1) ? Colors.red : Colors.black)),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new StockScreen()));
+                  },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  leading: Icon(Icons.home, color: Colors.black),
+                  // leading: Icon(Icons.home, color: Colors.black),
                   title: Text('Billing Section',
                       style: TextStyle(color: Colors.black)),
                 ),
@@ -72,7 +95,7 @@ class _NDrawerState extends State<NDrawer> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  leading: Icon(Icons.home, color: Colors.black),
+                  // leading: Icon(Icons.home, color: Colors.black),
                   title: Text('Dealers', style: TextStyle(color: Colors.black)),
                 ),
               ),
@@ -82,9 +105,18 @@ class _NDrawerState extends State<NDrawer> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
-                  leading: Icon(Icons.add, color: Colors.black),
+                  // leading: Icon(Icons.add, color: Colors.black),
                   title: Text(text, style: TextStyle(color: Colors.black)),
-                  onTap: onPressed,
+                  onTap: onPressed1,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  // leading: Icon(Icons.circle, color: Colors.black),
+                  title: Text('Out of Stock',
+                      style: TextStyle(color: Colors.black)),
+                  onTap: onPressed2,
                 ),
               ),
             ],
