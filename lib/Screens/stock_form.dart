@@ -18,7 +18,7 @@ class AddStock extends StatefulWidget {
 }
 
 class _AddStockState extends State<AddStock> {
-  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _stockKey = GlobalKey<FormState>();
   Stock _currentStock = new Stock();
   List<int> idList = [];
 
@@ -100,7 +100,7 @@ class _AddStockState extends State<AddStock> {
         decoration: InputDecoration(
             labelText: 'Available Stocks',
             labelStyle: TextStyle(fontSize: 20, height: 0.6)),
-        initialValue: _currentStock.stock.toString(),
+        initialValue: _currentStock.availStocks.toString(),
         keyboardType: TextInputType.number,
         style: TextStyle(fontSize: 17),
         validator: (value) {
@@ -110,7 +110,7 @@ class _AddStockState extends State<AddStock> {
           return null;
         },
         onSaved: (value) {
-          _currentStock.stock = int.parse(value.toString());
+          _currentStock.availStocks = double.parse(value.toString());
         },
       ),
     );
@@ -163,10 +163,10 @@ class _AddStockState extends State<AddStock> {
   }
 
   _saveStock() {
-    if (!(_globalKey.currentState!.validate())) {
+    if (!(_stockKey.currentState!.validate())) {
       return '';
     }
-    _globalKey.currentState!.save();
+    _stockKey.currentState!.save();
 
     uploadStocks(_currentStock, widget.isUpdating);
   }
@@ -180,76 +180,74 @@ class _AddStockState extends State<AddStock> {
         preferredSize: Size.fromHeight(50),
         child: CustomAppBar(),
       ),
-      body: Center(
-        child: Form(
-          key: _globalKey,
-          autovalidateMode: AutovalidateMode.always,
-          child: VStack(
-            [
-              Center(
-                  child: (widget.isUpdating ? 'Update Stock' : 'Add Stock')
-                      .text
-                      .xl4
-                      .textStyle(GoogleFonts.raleway())
-                      .make()),
-              20.heightBox,
-              (widget.isUpdating ? '' : 'Last ID used is : ${getMaxID()}')
-                  .text
-                  .textStyle(GoogleFonts.poppins(fontSize: 18))
-                  .red600
-                  .bold
-                  .make(),
-              2.heightBox,
-              Container(
-                  width: width,
-                  child: widget.isUpdating
-                      ? 'Unique ID : ${_currentStock.id}'
-                          .text
-                          .semiBold
-                          .textStyle(GoogleFonts.poppins(fontSize: 18))
-                          .red500
-                          .makeCentered()
-                      : _buildIDField()),
-              10.heightBox,
-              Container(width: width, child: _buildNameField()),
-              10.heightBox,
-              Container(width: width, child: _buildStockField()),
-              10.heightBox,
-              Container(width: width, child: _buildCPField()),
-              10.heightBox,
-              Container(width: width, child: _buildSPField()),
-              20.heightBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                    width: 150,
-                    height: 40,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: kblueColor),
-                      onPressed: () =>
-                          _saveStock().then(Navigator.pop(context)),
-                      child: Text('Save', style: TextStyle(fontSize: 18)),
-                    ),
+      body: Form(
+        key: _stockKey,
+        autovalidateMode: AutovalidateMode.always,
+        child: VStack(
+          [
+            10.heightBox,
+            Center(
+                child: (widget.isUpdating ? 'Update Stock' : 'Add Stock')
+                    .text
+                    .xl4
+                    .textStyle(GoogleFonts.raleway())
+                    .make()),
+            20.heightBox,
+            (widget.isUpdating ? '' : 'Last ID used is : ${getMaxID()}')
+                .text
+                .textStyle(GoogleFonts.poppins(fontSize: 18))
+                .red600
+                .bold
+                .make(),
+            2.heightBox,
+            Container(
+                width: width,
+                child: widget.isUpdating
+                    ? 'Unique ID : ${_currentStock.id}'
+                        .text
+                        .semiBold
+                        .textStyle(GoogleFonts.poppins(fontSize: 18))
+                        .red500
+                        .makeCentered()
+                    : _buildIDField()),
+            10.heightBox,
+            Container(width: width, child: _buildNameField()),
+            10.heightBox,
+            Container(width: width, child: _buildStockField()),
+            10.heightBox,
+            Container(width: width, child: _buildCPField()),
+            10.heightBox,
+            Container(width: width, child: _buildSPField()),
+            20.heightBox,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  width: 150,
+                  height: 40,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: kblueColor),
+                    onPressed: () => _saveStock().then(Navigator.pop(context)),
+                    child: Text('Save', style: TextStyle(fontSize: 18)),
                   ),
-                  SizedBox(
-                    width: 150,
-                    height: 40,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: kremColor),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('Cancel',
-                          style: TextStyle(fontSize: 18, color: Colors.black)),
-                    ),
+                ),
+                SizedBox(
+                  width: 150,
+                  height: 40,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: kremColor),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancel',
+                        style: TextStyle(fontSize: 18, color: Colors.black)),
                   ),
-                ],
-              ),
-            ],
-            crossAlignment: CrossAxisAlignment.center,
-          ).scrollVertical(),
-        ),
+                ),
+              ],
+            ),
+          ],
+          crossAlignment: CrossAxisAlignment.center,
+        ).scrollVertical(),
       ),
     );
   }

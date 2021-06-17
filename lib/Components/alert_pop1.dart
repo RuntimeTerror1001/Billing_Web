@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-
 import '../constants.dart';
 
 enum ConfirmAction { Cancel, Delete }
 
-class AlertPop {
-  Future<dynamic> ConfirmDialog(BuildContext context) async {
+class AlertPop1 {
+  Future<dynamic> confirmDialog(BuildContext context,
+      {required String title,
+      required String content,
+      required String text2,
+      required String text1}) async {
     return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Delete This Stock?'),
-            content:
-                const Text('This will delete the stock from your database.'),
+            title: Text(title),
+            content: Text(content),
             actions: <Widget>[
               ElevatedButton(
                 style: ElevatedButton.styleFrom(primary: kblueColor),
-                child: const Text('Cancel'),
+                child: Text(text2),
                 onPressed: () {
                   Navigator.of(context).pop(ConfirmAction.Cancel);
                 },
@@ -26,7 +28,7 @@ class AlertPop {
                 style: ElevatedButton.styleFrom(
                   primary: kremColor,
                 ),
-                child: const Text('Delete'),
+                child: Text(text1),
                 onPressed: () {
                   Navigator.of(context).pop(ConfirmAction.Delete);
                 },

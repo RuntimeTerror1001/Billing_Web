@@ -1,3 +1,4 @@
+import 'package:billin_app_web/Components/custom_appbar.dart';
 import 'package:billin_app_web/Components/drawer.dart';
 import 'package:billin_app_web/Models/stock.dart';
 import 'package:billin_app_web/Notifiers/stock_notifier.dart';
@@ -7,7 +8,7 @@ import 'package:billin_app_web/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:billin_app_web/Components/alert_pop.dart';
+import 'package:billin_app_web/Components/alert_pop1.dart';
 import 'package:billin_app_web/Components/stock_card.dart';
 import 'package:billin_app_web/Components/search_box.dart';
 
@@ -53,7 +54,7 @@ class _StockScreenState extends State<StockScreen> {
     StockNotifier tstockNotifier =
         Provider.of<StockNotifier>(context, listen: true);
     Size size = MediaQuery.of(context).size;
-    AlertPop alertPop = new AlertPop();
+    AlertPop1 alertPop = new AlertPop1();
     List<Stock> finalList = [];
     if (_searchController.text.isNotEmpty) {
       setState(() {
@@ -67,6 +68,10 @@ class _StockScreenState extends State<StockScreen> {
     }
 
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: CustomAppBar(),
+      ),
       body: Container(
         height: size.height,
         width: size.width,
@@ -77,13 +82,15 @@ class _StockScreenState extends State<StockScreen> {
               color: knavColor,
               height: size.height,
               child: NDrawer(
-                text: 'Add Stock',
+                text1: 'Add Stock',
+                text2: 'Out Of Stock',
                 onPress: 1,
               ),
             ),
             VStack(
               [
                 SearchBox(size: size, searchController: _searchController),
+                20.heightBox,
                 Container(
                   height: size.height * 0.90,
                   width: size.width * 0.80,

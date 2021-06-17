@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Stock {
+  String uid = '';
   int id = 0;
   String name = '';
-  int stock = 0;
+  double availStocks = 0.0;
   double cp = 0.0;
   double sp = 0.0;
-  String uid = '';
   Timestamp updatedAt = Timestamp.now();
   Timestamp createdAt = Timestamp.now();
 
@@ -15,7 +15,7 @@ class Stock {
   Stock.fromMap(Map<String, dynamic> data) {
     id = data['id'];
     name = data['name'];
-    stock = data['stock'];
+    availStocks = data['stock'];
     cp = data['cp'];
     sp = data['sp'];
     updatedAt = data['updatedAt'];
@@ -27,7 +27,7 @@ class Stock {
     return {
       'id': id,
       'name': name,
-      'stock': stock,
+      'stock': availStocks,
       'cp': cp,
       'sp': sp,
       'updatedAt': updatedAt,

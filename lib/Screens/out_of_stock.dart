@@ -39,8 +39,19 @@ class _OutOfStockState extends State<OutOfStock> {
                       showEditIcon: false, placeholder: false),
                   DataCell(Text(stock.name),
                       showEditIcon: false, placeholder: false),
-                  DataCell(Text('${stock.stock}'),
-                      showEditIcon: false, placeholder: false),
+                  DataCell(
+                      Text(
+                        '${stock.availStocks}',
+                        style: TextStyle(
+                            fontWeight: (stock.availStocks == 0)
+                                ? FontWeight.bold
+                                : FontWeight.w300,
+                            color: (stock.availStocks == 0)
+                                ? Colors.red[700]
+                                : Colors.black),
+                      ),
+                      showEditIcon: false,
+                      placeholder: false),
                 ]))
             .toList(),
       );
@@ -52,15 +63,18 @@ class _OutOfStockState extends State<OutOfStock> {
     Size size = MediaQuery.of(context).size;
     List<Stock> finalList = [];
     finalList.addAll(_stockNotifier.stockList);
-    finalList.retainWhere((stock) => stock.stock <= 10);
+    finalList.retainWhere((stock) => stock.availStocks <= 10);
 
     return Scaffold(
+      appBar: PreferredSize(
+        child: CustomAppBar(),
+        preferredSize: Size.fromHeight(50),
+      ),
       body: Container(
         width: size.width,
         height: size.height,
         child: VStack(
           [
-            CustomAppBar(),
             20.heightBox,
             Padding(
               padding: const EdgeInsets.all(8.0),
