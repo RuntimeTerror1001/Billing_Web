@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'Notifiers/dealer_notifier.dart';
 import 'Screens/stock_screen.dart';
 
 Future main() async {
@@ -14,9 +13,6 @@ Future main() async {
     providers: [
       ChangeNotifierProvider(
         create: (context) => StockNotifier(),
-      ),
-      ChangeNotifierProvider(
-        create: (context) => DealerNotifier(),
       ),
       ChangeNotifierProvider(
         create: (context) => CustomerBillNotifier(),

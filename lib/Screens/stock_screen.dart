@@ -61,7 +61,7 @@ class _StockScreenState extends State<StockScreen> {
         finalList = stocksFiltered;
       });
     } else {
-      getStocks(tstockNotifier);
+      // getStocks(tstockNotifier);
       setState(() {
         finalList = tstockNotifier.stockList;
       });
@@ -69,7 +69,7 @@ class _StockScreenState extends State<StockScreen> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
+        preferredSize: Size.fromHeight(60),
         child: CustomAppBar(),
       ),
       body: Container(
@@ -90,6 +90,15 @@ class _StockScreenState extends State<StockScreen> {
             VStack(
               [
                 SearchBox(size: size, searchController: _searchController),
+                5.heightBox,
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => StockScreen()));
+                    },
+                    child: 'Refresh'.text.black.makeCentered()),
                 20.heightBox,
                 Container(
                   height: size.height * 0.90,
@@ -116,6 +125,7 @@ class _StockScreenState extends State<StockScreen> {
                   ),
                 ),
               ],
+              crossAlignment: CrossAxisAlignment.center,
             ).scrollVertical(),
           ],
         ),

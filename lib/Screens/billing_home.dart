@@ -1,6 +1,7 @@
 import 'package:billin_app_web/Components/custom_appbar.dart';
 import 'package:billin_app_web/Components/drawer.dart';
 import 'package:billin_app_web/Screens/create_bill.dart';
+import 'package:billin_app_web/Screens/last_10.dart';
 import 'package:billin_app_web/Screens/old_bills.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +20,7 @@ class _BillingHomeState extends State<BillingHome> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
+        preferredSize: Size.fromHeight(60),
         child: CustomAppBar(),
       ),
       body: Container(
@@ -115,8 +116,7 @@ class _BillingHomeState extends State<BillingHome> {
                                               context,
                                               new MaterialPageRoute(
                                                   builder: (context) =>
-                                                      OldBillsScreen(
-                                                          last10: false)));
+                                                      OldBillsScreen()));
                                         },
                                         child: 'All Old Bills'
                                             .text
@@ -138,8 +138,7 @@ class _BillingHomeState extends State<BillingHome> {
                                               context,
                                               new MaterialPageRoute(
                                                   builder: (context) =>
-                                                      OldBillsScreen(
-                                                          last10: true)));
+                                                      LastTenScreen()));
                                         },
                                         child: 'Last 10 Bills'
                                             .text

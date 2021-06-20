@@ -20,35 +20,48 @@ class PdfApi {
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) => pw.Column(
           children: [
+            pw.Align(
+              alignment: pw.Alignment.topRight,
+              child: pw.Text('Bill No. : ${customer.billNo}',
+                  style: pw.TextStyle(font: robotoReg)),
+            ),
+            pw.SizedBox(height: 0.2 * PdfPageFormat.cm),
             pw.Container(
-              height: 75,
+              height: 85,
               decoration: pw.BoxDecoration(
                 color: PdfColor.fromHex('283046'),
                 borderRadius: pw.BorderRadius.circular(25),
               ),
               child: pw.Center(
-                child: pw.Text("Darshan Collections and Men's Wear",
-                    softWrap: true,
-                    style: pw.TextStyle(
-                        fontSize: 25,
-                        font: lobsterTwo,
-                        color: PdfColor.fromHex('FFD4AF37'))),
+                child: pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.center,
+                    crossAxisAlignment: pw.CrossAxisAlignment.center,
+                    children: [
+                      pw.Text("Darshan Collections and Men's Wear",
+                          softWrap: true,
+                          style: pw.TextStyle(
+                              fontSize: 25,
+                              font: lobsterTwo,
+                              color: PdfColor.fromHex('FFD4AF37'))),
+                      pw.Text('Kingaon Raja',
+                          softWrap: true,
+                          style: pw.TextStyle(
+                              fontSize: 20,
+                              font: lobsterTwo,
+                              color: PdfColor.fromHex('FFD4AF37'))),
+                    ]),
               ),
             ),
             pw.SizedBox(height: 0.5 * PdfPageFormat.cm),
-            pw.Divider(thickness: 5),
-            pw.SizedBox(height: 0.5 * PdfPageFormat.cm),
             pw.Center(
-                child: pw.Container(
-              width: 120,
-              height: 50,
-              decoration: pw.BoxDecoration(
-                  color: PdfColor.fromHex('E97575'),
-                  borderRadius: pw.BorderRadius.circular(30)),
-              child: pw.Center(
-                  child: pw.Text('${customer.billNo}',
-                      style: pw.TextStyle(font: robotoReg))),
-            )),
+                child: pw.Text('Phone Number : +91-7032748749',
+                    style: pw.TextStyle(fontSize: 15, font: robotoLight))),
+            pw.SizedBox(height: 0.1 * PdfPageFormat.cm),
+            pw.Center(
+                child: pw.Text('Email ID : darshanwagde01@gmail.com',
+                    style: pw.TextStyle(fontSize: 15, font: robotoLight))),
+            pw.SizedBox(height: 0.5 * PdfPageFormat.cm),
+            pw.Divider(thickness: 5),
             pw.SizedBox(height: 0.5 * PdfPageFormat.cm),
             pw.Container(
               width: 500,
@@ -61,14 +74,11 @@ class PdfApi {
               child: pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
-                    pw.Text('Name : ${customer.name}',
-                        textAlign: pw.TextAlign.left),
+                    pw.Text('Name : ${customer.name}'),
                     pw.SizedBox(height: 0.2 * PdfPageFormat.cm),
-                    pw.Text('Phone Number : ${customer.phNum}',
-                        textAlign: pw.TextAlign.left),
+                    pw.Text('Phone Number : ${customer.phNum}'),
                     pw.SizedBox(height: 0.2 * PdfPageFormat.cm),
-                    pw.Text('Address : ${customer.cAddress}',
-                        textAlign: pw.TextAlign.left)
+                    pw.Text('Address : ${customer.cAddress}', softWrap: true)
                   ]),
             ),
             pw.SizedBox(height: 1 * PdfPageFormat.cm),
@@ -98,6 +108,7 @@ class PdfApi {
 
   static buildInvoiceTable(Customer customer, pw.Font hFont) {
     final headers = [
+      'Sr No.',
       'Item Desc.',
       'Original Price',
       'Quantity',
@@ -110,7 +121,13 @@ class PdfApi {
     final data = bStockList.map((bStock) {
       Stock stock = Stock.fromMap(bStock.stockMap);
 
-      return [stock.name, stock.sp, bStock.quantity, bStock.final_price];
+      return [
+        bStockList.indexOf(bStock) + 1,
+        stock.name,
+        stock.sp,
+        bStock.quantity,
+        bStock.final_price
+      ];
     }).toList();
 
     return pw.Table.fromTextArray(
@@ -126,6 +143,7 @@ class PdfApi {
         2: pw.Alignment.center,
         3: pw.Alignment.center,
         4: pw.Alignment.center,
+        5: pw.Alignment.center,
       },
     );
   }

@@ -68,7 +68,7 @@ class _OutOfStockState extends State<OutOfStock> {
     return Scaffold(
       appBar: PreferredSize(
         child: CustomAppBar(),
-        preferredSize: Size.fromHeight(50),
+        preferredSize: Size.fromHeight(60),
       ),
       body: Container(
         width: size.width,

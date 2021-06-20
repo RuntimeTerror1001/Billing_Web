@@ -11,14 +11,14 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:billin_app_web/APIs/pdf_api.dart';
 import '../constants.dart';
 
-class OldBillsScreen extends StatefulWidget {
+class LastTenScreen extends StatefulWidget {
   @override
-  _OldBillsScreenState createState() => _OldBillsScreenState();
+  _LastTenScreenState createState() => _LastTenScreenState();
 }
 
-class _OldBillsScreenState extends State<OldBillsScreen> {
-  TextEditingController _searchController = TextEditingController();
-  List<Customer> custsFiltered = [];
+class _LastTenScreenState extends State<LastTenScreen> {
+  // TextEditingController _searchController = TextEditingController();
+  // List<Customer> custsFiltered = [];
 
   @override
   void initState() {
@@ -26,27 +26,27 @@ class _OldBillsScreenState extends State<OldBillsScreen> {
     CustomerBillNotifier cbNotifier =
         Provider.of<CustomerBillNotifier>(context, listen: false);
     getBills(cbNotifier);
-    _searchController.addListener(() {
-      filterCusts();
-    });
+    // _searchController.addListener(() {
+    //   filterCusts();
+    // });
   }
 
-  filterCusts() {
-    CustomerBillNotifier cbNotifier =
-        Provider.of<CustomerBillNotifier>(context, listen: true);
-    List<Customer> _fCust = [];
-    _fCust.addAll(cbNotifier.custList);
-    if (_searchController.text.isNotEmpty) {
-      _fCust.retainWhere((stock) {
-        String searchTerm = _searchController.text.toLowerCase();
-        String stockName = stock.name.toString().toLowerCase();
-        return stockName.contains(searchTerm);
-      });
-      setState(() {
-        custsFiltered = _fCust;
-      });
-    }
-  }
+  // filterCusts() {
+  //   CustomerBillNotifier cbNotifier =
+  //       Provider.of<CustomerBillNotifier>(context, listen: true);
+  //   List<Customer> _fCust = [];
+  //   _fCust.addAll(cbNotifier.custList);
+  //   if (_searchController.text.isNotEmpty) {
+  //     _fCust.retainWhere((stock) {
+  //       String searchTerm = _searchController.text.toLowerCase();
+  //       String stockName = stock.name.toString().toLowerCase();
+  //       return stockName.contains(searchTerm);
+  //     });
+  //     setState(() {
+  //       custsFiltered = _fCust;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,17 +54,24 @@ class _OldBillsScreenState extends State<OldBillsScreen> {
     CustomerBillNotifier _cbNotifier =
         Provider.of<CustomerBillNotifier>(context, listen: false);
     List<Customer> finalList = [];
+    finalList.addAll(_cbNotifier.custList);
 
-    if (_searchController.text.isNotEmpty) {
-      setState(() {
-        finalList = custsFiltered;
-      });
-    } else {
-      getBills(_cbNotifier);
-      setState(() {
-        finalList = _cbNotifier.custList;
-      });
+    if (finalList.length > 10) {
+      finalList.retainWhere((element) => finalList.indexOf(element) < 10);
     }
+
+    // if (_searchController.text.isNotEmpty) {
+    //   setState(() {
+    //     finalList = custsFiltered;
+    //   });
+    // } else {
+    //   // getBills(_cbNotifier);
+    //   setState(() {
+    //     finalList.addAll(_cbNotifier.custList);
+    //     if (finalList.length < 0 && finalList.length < 10)
+    //       finalList.retainWhere((element) => finalList.indexOf(element) < 10);
+    //   });
+    // }
 
     return Scaffold(
       appBar: PreferredSize(
@@ -91,20 +98,20 @@ class _OldBillsScreenState extends State<OldBillsScreen> {
                 child: VStack(
                   [
                     10.heightBox,
-                    'All Old Bills'
+                    'Last 10 Bills'
                         .text
                         .xl2
                         .textStyle(GoogleFonts.raleway())
                         .makeCentered(),
                     20.heightBox,
-                    SearchBox(size: size, searchController: _searchController),
+                    // SearchBox(size: size, searchController: _searchController),
                     5.heightBox,
                     TextButton(
                         onPressed: () {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => OldBillsScreen()));
+                                  builder: (context) => LastTenScreen()));
                         },
                         child: 'Refresh'.text.black.makeCentered()),
                     15.heightBox,

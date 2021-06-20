@@ -2,6 +2,7 @@ import 'package:billin_app_web/APIs/stock_api.dart';
 import 'package:billin_app_web/Models/stock.dart';
 import 'package:billin_app_web/Notifiers/stock_notifier.dart';
 import 'package:billin_app_web/Screens/stock_form.dart';
+import 'package:billin_app_web/Screens/stock_screen.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
 import 'alert_pop1.dart';
@@ -83,6 +84,10 @@ class StockCard extends StatelessWidget {
                             text1: 'Delete');
                         if (action == ConfirmAction.Delete) {
                           deleteStock(stock);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StockScreen()));
                         }
                       },
                       child: Center(

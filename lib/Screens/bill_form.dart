@@ -3,9 +3,11 @@ import 'package:billin_app_web/APIs/pdf_api.dart';
 import 'package:billin_app_web/Components/custom_appbar.dart';
 import 'package:billin_app_web/Models/bill_stock.dart';
 import 'package:billin_app_web/Models/stock.dart';
+import 'package:billin_app_web/Notifiers/custBill_notifier.dart';
 import 'package:billin_app_web/Screens/billing_home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:intl/intl.dart';
 import 'package:billin_app_web/Models/customer.dart';
@@ -23,6 +25,7 @@ class _BillFormState extends State<BillForm> {
   final GlobalKey<FormState> _billKey = GlobalKey<FormState>();
   Customer customer = Customer();
   bool isSaved = false;
+  String prevID = '';
 
   Widget _buildBillNoField() {
     return Padding(
@@ -200,7 +203,19 @@ class _BillFormState extends State<BillForm> {
       );
 
   @override
+  void initState() {
+    CustomerBillNotifier cbNotifier =
+        Provider.of<CustomerBillNotifier>(context, listen: false);
+    getBills(cbNotifier);
+    prevID = cbNotifier.custList.first.billNo;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    CustomerBillNotifier cbNotifier =
+        Provider.of<CustomerBillNotifier>(context, listen: true);
+    prevID = cbNotifier.custList.first.billNo;
     List<Map<String, dynamic>> billMapList = [];
     widget.billStockList.forEach((billStock) {
       billMapList.add(billStock.toMap());
@@ -212,7 +227,7 @@ class _BillFormState extends State<BillForm> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
+        preferredSize: Size.fromHeight(60),
         child: CustomAppBar(),
       ),
       body: Form(
@@ -221,29 +236,6 @@ class _BillFormState extends State<BillForm> {
         child: VStack(
           [
             10.heightBox,
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => BillingHome()));
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(Icons.arrow_back_outlined, color: kblueColor),
-                    5.widthBox,
-                    'Back'
-                        .text
-                        .color(kblueColor)
-                        .textStyle(GoogleFonts.poppins(fontSize: 18))
-                        .make()
-                  ],
-                ),
-              ),
-            ),
             20.heightBox,
             Center(
                 child: 'Customer Info'
@@ -252,6 +244,18 @@ class _BillFormState extends State<BillForm> {
                     .textStyle(GoogleFonts.raleway())
                     .make()),
             20.heightBox,
+            prevID != ''
+                ? Container(
+                    width: width,
+                    child: 'Previous Bill No : $prevID'
+                        .text
+                        .semiBold
+                        .textStyle(GoogleFonts.poppins(fontSize: 18))
+                        .red500
+                        .makeCentered(),
+                  )
+                : Container(),
+            10.heightBox,
             Container(width: width, child: _buildBillNoField()),
             10.heightBox,
             Container(width: width, child: _buildNameField()),
@@ -315,6 +319,8 @@ class _BillFormState extends State<BillForm> {
                 onPressed: () async {
                   uploadBills(customer);
                   await PdfApi.generatePDF(customer);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BillingHome()));
                 },
                 child: Text('Generate Bill', style: TextStyle(fontSize: 18)),
               ),

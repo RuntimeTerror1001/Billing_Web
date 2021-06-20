@@ -39,6 +39,7 @@ getBills(CustomerBillNotifier cbNotifier) async {
   });
 
   cbNotifier.custList = _custList;
+  print('notifier ${cbNotifier.custList}');
   // cbNotifier.custList.forEach((element) {
   //   print(element.billNo);
   // });

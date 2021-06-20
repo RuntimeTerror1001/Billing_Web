@@ -1,5 +1,6 @@
 import 'package:billin_app_web/Components/custom_appbar.dart';
 import 'package:billin_app_web/Notifiers/stock_notifier.dart';
+import 'package:billin_app_web/Screens/stock_screen.dart';
 import '../APIs/stock_api.dart';
 import 'package:billin_app_web/constants.dart';
 import 'package:flutter/material.dart';
@@ -177,7 +178,7 @@ class _AddStockState extends State<AddStock> {
     double width = size.width * 0.5;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
+        preferredSize: Size.fromHeight(60),
         child: CustomAppBar(),
       ),
       body: Form(
@@ -227,7 +228,10 @@ class _AddStockState extends State<AddStock> {
                   height: 40,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: kblueColor),
-                    onPressed: () => _saveStock().then(Navigator.pop(context)),
+                    onPressed: () => _saveStock().then(Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StockScreen()))),
                     child: Text('Save', style: TextStyle(fontSize: 18)),
                   ),
                 ),

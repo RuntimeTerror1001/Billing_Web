@@ -1,8 +1,6 @@
 import 'package:billin_app_web/Models/stock.dart';
 import 'package:billin_app_web/Notifiers/stock_notifier.dart';
 import 'package:billin_app_web/Screens/billing_home.dart';
-import 'package:billin_app_web/Screens/dealer_form.dart';
-import 'package:billin_app_web/Screens/dealer_screen.dart';
 import 'package:billin_app_web/Screens/stock_form.dart';
 import 'package:billin_app_web/Screens/out_of_stock.dart';
 import 'package:billin_app_web/Screens/stock_screen.dart';
@@ -36,13 +34,6 @@ class _NDrawerState extends State<NDrawer> {
             builder: (context) => new AddStock(isUpdating: false)));
   }
 
-  returnAddDealer() {
-    Navigator.push(
-        context,
-        new MaterialPageRoute(
-            builder: (context) => new AddDealer(isEditing: false)));
-  }
-
   returnOutStock() {
     Navigator.push(
         context, new MaterialPageRoute(builder: (context) => new OutOfStock()));
@@ -51,8 +42,6 @@ class _NDrawerState extends State<NDrawer> {
   onPressed1() {
     if (onPress == 1) {
       return returnAddStock();
-    } else if (onPress == 3) {
-      return returnAddDealer();
     }
     return () {};
   }
@@ -113,21 +102,6 @@ class _NDrawerState extends State<NDrawer> {
                         context,
                         new MaterialPageRoute(
                             builder: (context) => new BillingHome()));
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  // leading: Icon(Icons.home, color: Colors.black),
-                  title: Text('Dealers',
-                      style: TextStyle(
-                          color: (onPress == 3) ? Colors.red : Colors.black)),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new DealerScreen()));
                   },
                 ),
               ),
