@@ -1,6 +1,8 @@
+import 'package:billin_app_web/APIs/customer_api.dart';
 import 'package:billin_app_web/Components/custom_appbar.dart';
 import 'package:billin_app_web/Components/drawer.dart';
 import 'package:billin_app_web/Models/stock.dart';
+import 'package:billin_app_web/Notifiers/custBill_notifier.dart';
 import 'package:billin_app_web/Notifiers/stock_notifier.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../APIs/stock_api.dart';
@@ -26,6 +28,9 @@ class _StockScreenState extends State<StockScreen> {
     StockNotifier stockNotifier =
         Provider.of<StockNotifier>(context, listen: false);
     getStocks(stockNotifier);
+    CustomerBillNotifier cbNotifier =
+        Provider.of<CustomerBillNotifier>(context, listen: false);
+    getBills(cbNotifier);
     _searchController.addListener(() {
       filterStocks();
     });
@@ -41,7 +46,8 @@ class _StockScreenState extends State<StockScreen> {
       _fstock.retainWhere((stock) {
         String searchTerm = _searchController.text.toLowerCase();
         String stockName = stock.name.toString().toLowerCase();
-        return stockName.contains(searchTerm);
+        String stockID = stock.id.toString().toLowerCase();
+        return stockName.contains(searchTerm) || stockID.contains(searchTerm);
       });
       setState(() {
         stocksFiltered = _fstock;

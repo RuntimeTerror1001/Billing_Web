@@ -26,6 +26,7 @@ class _BillFormState extends State<BillForm> {
   Customer customer = Customer();
   bool isSaved = false;
   String prevID = '';
+  List<String> prevBillNoList = [];
 
   Widget _buildBillNoField() {
     return Padding(
@@ -62,6 +63,9 @@ class _BillFormState extends State<BillForm> {
         validator: (value) {
           if (value.isEmptyOrNull) {
             return 'Name is required';
+          }
+          if (prevBillNoList.contains(value)) {
+            return 'Bill ID is already used';
           }
           return null;
         },
@@ -208,14 +212,14 @@ class _BillFormState extends State<BillForm> {
         Provider.of<CustomerBillNotifier>(context, listen: false);
     getBills(cbNotifier);
     prevID = cbNotifier.custList.first.billNo;
+    cbNotifier.custList.forEach((customer) {
+      prevBillNoList.add(customer.billNo);
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    CustomerBillNotifier cbNotifier =
-        Provider.of<CustomerBillNotifier>(context, listen: true);
-    prevID = cbNotifier.custList.first.billNo;
     List<Map<String, dynamic>> billMapList = [];
     widget.billStockList.forEach((billStock) {
       billMapList.add(billStock.toMap());

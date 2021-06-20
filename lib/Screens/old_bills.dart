@@ -33,14 +33,16 @@ class _OldBillsScreenState extends State<OldBillsScreen> {
 
   filterCusts() {
     CustomerBillNotifier cbNotifier =
-        Provider.of<CustomerBillNotifier>(context, listen: true);
+        Provider.of<CustomerBillNotifier>(context, listen: false);
     List<Customer> _fCust = [];
     _fCust.addAll(cbNotifier.custList);
     if (_searchController.text.isNotEmpty) {
-      _fCust.retainWhere((stock) {
+      _fCust.retainWhere((customer) {
         String searchTerm = _searchController.text.toLowerCase();
-        String stockName = stock.name.toString().toLowerCase();
-        return stockName.contains(searchTerm);
+        String stockName = customer.name.toString().toLowerCase();
+        String custBillNo = customer.billNo.toString().toLowerCase();
+        return stockName.contains(searchTerm) ||
+            custBillNo.contains(searchTerm);
       });
       setState(() {
         custsFiltered = _fCust;
@@ -60,7 +62,7 @@ class _OldBillsScreenState extends State<OldBillsScreen> {
         finalList = custsFiltered;
       });
     } else {
-      getBills(_cbNotifier);
+      // getBills(_cbNotifier);
       setState(() {
         finalList = _cbNotifier.custList;
       });

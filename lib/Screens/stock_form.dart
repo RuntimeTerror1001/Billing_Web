@@ -53,7 +53,7 @@ class _AddStockState extends State<AddStock> {
             labelText: 'Unique ID',
             labelStyle: TextStyle(fontSize: 20, height: 0.6)),
         initialValue: _currentStock.id.toString(),
-        keyboardType: TextInputType.number,
+        keyboardType: TextInputType.text,
         style: TextStyle(fontSize: 17),
         validator: (value) {
           if (value.isEmptyOrNull) {
@@ -61,6 +61,9 @@ class _AddStockState extends State<AddStock> {
           }
           if (idList.contains(int.parse(value.toString()))) {
             return 'ID is already in use';
+          }
+          if (int.parse(value!) < 0) {
+            return 'ID cannot be negative';
           }
           return null;
         },
@@ -102,11 +105,15 @@ class _AddStockState extends State<AddStock> {
             labelText: 'Available Stocks',
             labelStyle: TextStyle(fontSize: 20, height: 0.6)),
         initialValue: _currentStock.availStocks.toString(),
-        keyboardType: TextInputType.number,
+        keyboardType:
+            TextInputType.numberWithOptions(signed: true, decimal: true),
         style: TextStyle(fontSize: 17),
         validator: (value) {
           if (value.isEmptyOrNull) {
             return 'Stock is required';
+          }
+          if (int.parse(value!) < 0) {
+            return 'Stock cannot be negative';
           }
           return null;
         },
@@ -125,11 +132,15 @@ class _AddStockState extends State<AddStock> {
             labelText: 'Cost Price',
             labelStyle: TextStyle(fontSize: 20, height: 0.6)),
         initialValue: _currentStock.cp.toString(),
-        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        keyboardType:
+            TextInputType.numberWithOptions(signed: true, decimal: true),
         style: TextStyle(fontSize: 17),
         validator: (value) {
           if (value.isEmptyOrNull) {
             return 'Cost Price is required';
+          }
+          if (int.parse(value!) < 0) {
+            return 'Cost Price cannot be negative';
           }
           return null;
         },
@@ -148,11 +159,15 @@ class _AddStockState extends State<AddStock> {
             labelText: 'Selling Price',
             labelStyle: TextStyle(fontSize: 20, height: 0.6)),
         initialValue: _currentStock.sp.toString(),
-        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        keyboardType:
+            TextInputType.numberWithOptions(signed: true, decimal: true),
         style: TextStyle(fontSize: 17),
         validator: (value) {
           if (value.isEmptyOrNull) {
             return 'Selling Price is required';
+          }
+          if (int.parse(value!) < 0) {
+            return 'Selling Price cannot be negative';
           }
           return null;
         },
@@ -165,6 +180,7 @@ class _AddStockState extends State<AddStock> {
 
   _saveStock() {
     if (!(_stockKey.currentState!.validate())) {
+      _stockKey.currentState!.reset();
       return '';
     }
     _stockKey.currentState!.save();
